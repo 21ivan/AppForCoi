@@ -1,15 +1,22 @@
 from django.shortcuts import render
-from .serializers import DirectionSerializer, DoctorSerializer
 from .models import Doctor, Direction
-from rest_framework import viewsets
 
 
 # Create your views here.
-class DoctorViewSet(viewsets.ModelViewSet):
-    serializer_class = DoctorSerializer
-    queryset = Doctor.objects.all()
+
+def doctor_list(request):
+    queryset = Doctor.objects.all().order_by('date_of_birthday', 'experience')
+    content = {
+        'title': 'Doctor List',
+        'queryset': queryset
+    }
+    return render(request, 'doctors/doctors_list.html', content)
 
 
-class DirectionViewSet(viewsets.ModelViewSet):
-    serializer_class = DirectionSerializer
+def direction_list(request):
     queryset = Direction.objects.all()
+    content = {
+        'title': 'Direction List',
+        'queryset': queryset
+    }
+    return render(request, 'doctors/directions_list.html', content)
